@@ -2,7 +2,7 @@ package com.greendelta.lca.search.aggregations;
 
 public class TermsAggregation extends SearchAggregation {
 
-	public final static String TYPE = "terms";
+	public final static String TYPE = "TERM";
 
 	public TermsAggregation(String field) {
 		super(field, TYPE, field);
