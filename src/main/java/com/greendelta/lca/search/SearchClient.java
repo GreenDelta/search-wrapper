@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface SearchClient {
 
-	SearchResult search(SearchQuery searchQuery);
+	SearchResult<Map<String, Object>> search(SearchQuery searchQuery);
 
 	void create(Map<String, Object> settings);
 

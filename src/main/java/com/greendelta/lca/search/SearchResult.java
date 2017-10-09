@@ -2,23 +2,22 @@ package com.greendelta.lca.search;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.greendelta.lca.search.aggregations.results.AggregationResult;
 
-public class SearchResult {
+public class SearchResult<T> {
 
-	public final List<Map<String, Object>> data = new ArrayList<>();
+	public final List<T> data = new ArrayList<>();
 	public final List<AggregationResult> aggregations = new ArrayList<>();
 	public final ResultInfo resultInfo = new ResultInfo();
 
 	public class ResultInfo {
 
-		public long pageSize;
+		public int pageSize;
 		public long count;
 		public long totalCount;
-		public long currentPage;
-		public long pageCount;
+		public int currentPage;
+		public int pageCount;
 
 		@Override
 		public String toString() {
