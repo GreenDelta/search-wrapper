@@ -46,19 +46,15 @@ public class SearchQueryBuilder {
 		return this;
 	}
 
-	public SearchQueryBuilder aggregation(SearchAggregation aggregation) {
-		return aggregation(aggregation, null);
-	}
-
-	public SearchQueryBuilder aggregation(SearchAggregation aggregation, String value) {
+	public SearchQueryBuilder aggregation(SearchAggregation aggregation, String... values) {
 		if (aggregation == null)
 			return this;
 		if (!hasAggregation(aggregation.name)) {
 			this.aggregations.add(aggregation);
 		}
-		if (value == null)
+		if (values == null)
 			return this;
-		filter(aggregation.name, value, Type.PHRASE);
+		filter(aggregation.name, Type.PHRASE, values);
 		return this;
 	}
 
@@ -69,15 +65,17 @@ public class SearchQueryBuilder {
 		return false;
 	}
 
-	public SearchQueryBuilder filter(String field, String value, Type type) {
-		if (field == null || value == null)
+	public SearchQueryBuilder filter(String field, Type type, String... values) {
+		if (field == null || values == null || values.length == 0)
 			return this;
 		SearchFilter filter = this.filters.get(field);
-		SearchFilterValue filterValue = new SearchFilterValue(value, type);
-		if (filter == null) {
-			this.filters.put(field, filter = new SearchFilter(field, filterValue));
-		} else {
-			filter.values.add(filterValue);
+		for (String value : values) {
+			SearchFilterValue filterValue = new SearchFilterValue(value, type);
+			if (filter == null) {
+				this.filters.put(field, filter = new SearchFilter(field, filterValue));
+			} else {
+				filter.values.add(filterValue);
+			}
 		}
 		return this;
 	}
