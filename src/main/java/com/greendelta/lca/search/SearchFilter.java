@@ -27,10 +27,6 @@ public class SearchFilter {
 		this.conjunction = conjunction == null ? Conjunction.OR : conjunction;
 	}
 
-	public enum Conjunction {
-		AND, OR;
-	}
-
 	@Override
 	public String toString() {
 		String s = "{" + field + "=";

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.greendelta.lca.search.SearchFilter.Conjunction;
 import com.greendelta.lca.search.aggregations.SearchAggregation;
 
 public class SearchQuery {
@@ -16,6 +15,7 @@ public class SearchQuery {
 	public final static int DEFAULT_PAGE_SIZE = 10;
 	private final Set<SearchAggregation> aggregations;
 	private final List<SearchFilter> filters = new ArrayList<>();
+	private final List<MultiSearchFilter> multiFilters = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
 	private String query;
 	private int page;
@@ -38,6 +38,10 @@ public class SearchQuery {
 		} else {
 			filter.values.addAll(values);
 		}
+	}
+	
+	void addFilter(MultiSearchFilter filter) {
+		this.multiFilters.add(filter);
 	}
 
 	void setSortBy(Map<String, SearchSorting> sortBy) {
@@ -66,6 +70,10 @@ public class SearchQuery {
 
 	public List<SearchFilter> getFilters() {
 		return filters;
+	}
+
+	public List<MultiSearchFilter> getMultiFilters() {
+		return multiFilters;
 	}
 
 	public Map<String, SearchSorting> getSortBy() {
@@ -98,7 +106,8 @@ public class SearchQuery {
 		s += "pageSize=" + pageSize + ", ";
 		s += "query=" + (query != null ? query : "");
 		s += "aggregations=" + joinFilters(true) + ", ";
-		s += "fitlers=" + joinFilters(false) + ", ";
+		s += "filters=" + joinFilters(false) + ", ";
+		s += "multiFilters=" + joinMultiFilters() + ", ";
 		return s + "sortBy=" + joinSortBy() + "}";
 	}
 
@@ -121,7 +130,7 @@ public class SearchQuery {
 		for (SearchFilter filter : filters) {
 			if (hasAggregation(filter.field) != aggregations)
 				continue;
-			s += filter.field + "=" + join(filter.values);
+			s += filter.toString();
 			i++;
 			if (i < filters.size()) {
 				s += ", ";
@@ -130,20 +139,17 @@ public class SearchQuery {
 		return s + "]";
 	}
 
-	private String join(Set<SearchFilterValue> list) {
-		if (list.isEmpty())
-			return "";
-		if (list.size() == 1)
-			return list.iterator().next().value;
+	private String joinMultiFilters() {
 		String s = "[";
 		int i = 0;
-		for (SearchFilterValue value : list) {
-			s += value.value;
+		for (MultiSearchFilter filter : multiFilters) {
+			s += filter.toString();
 			i++;
-			if (i < list.size()) {
+			if (i < multiFilters.size()) {
 				s += ", ";
 			}
 		}
 		return s + "]";
 	}
+
 }

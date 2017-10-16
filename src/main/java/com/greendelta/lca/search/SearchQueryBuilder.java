@@ -6,33 +6,34 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import com.greendelta.lca.search.SearchFilter.Conjunction;
 import com.greendelta.lca.search.SearchFilterValue.Type;
 import com.greendelta.lca.search.aggregations.SearchAggregation;
 
 public class SearchQueryBuilder {
 
 	private String query;
-	private String[] queryFields;
 	private int page = 0;
 	private int pageSize = SearchQuery.DEFAULT_PAGE_SIZE;
 	private Map<String, SearchFilter> filters = new HashMap<>();
+	private Set<MultiSearchFilter> multiFilters = new HashSet<>();
 	private Set<SearchAggregation> aggregations = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 
-	public SearchQueryBuilder query(String query) {
-		return query(query, "_all");
-	}
-
 	public SearchQueryBuilder query(String query, String queryField) {
-		return query(query, new String[] { queryField });
+		if (query == null || query.isEmpty() || queryField == null || queryField.isEmpty())
+			return this;
+		this.query = query;
+		filter(queryField, split(query));
+		return this;
 	}
 
 	public SearchQueryBuilder query(String query, String[] queryFields) {
-		if (queryFields == null || queryFields.length == 0)
+		if (query == null || query.isEmpty() || queryFields == null || queryFields.length == 0)
 			return this;
+		if (queryFields.length == 1)
+			return query(query, queryFields[0]);
 		this.query = query;
-		this.queryFields = queryFields;
+		filter(queryFields, split(query));
 		return this;
 	}
 
@@ -54,7 +55,7 @@ public class SearchQueryBuilder {
 		}
 		if (values == null)
 			return this;
-		filter(aggregation.name, Type.PHRASE, values);
+		filter(aggregation.name, values, Type.PHRASE);
 		return this;
 	}
 
@@ -65,18 +66,56 @@ public class SearchQueryBuilder {
 		return false;
 	}
 
-	public SearchQueryBuilder filter(String field, Type type, String... values) {
+	public SearchQueryBuilder filter(String field, String value, Type type) {
+		return filter(field, new String[] {value}, type);
+	}
+
+	public SearchQueryBuilder filter(String field, String[] values, Type type) {
 		if (field == null || values == null || values.length == 0)
 			return this;
-		SearchFilter filter = this.filters.get(field);
+		Set<SearchFilterValue> filterValues = new HashSet<>();
 		for (String value : values) {
-			SearchFilterValue filterValue = new SearchFilterValue(value, type);
-			if (filter == null) {
-				this.filters.put(field, filter = new SearchFilter(field, filterValue));
-			} else {
-				filter.values.add(filterValue);
-			}
+			filterValues.add(new SearchFilterValue(value, type));
 		}
+		filter(field, filterValues);
+		return this;
+	}
+
+	private SearchQueryBuilder filter(String field, Set<SearchFilterValue> values) {
+		if (field == null || values == null || values.size() == 0)
+			return this;
+		SearchFilter filter = this.filters.get(field);
+		if (filter == null) {
+			this.filters.put(field, filter = new SearchFilter(field, values));
+		} else {
+			filter.values.addAll(values);
+		}
+		return this;
+	}
+
+	public SearchQueryBuilder filter(String[] fields, String value, Type type) {
+		return filter(fields, new String[] {value}, type);
+	}
+
+	public SearchQueryBuilder filter(String[] fields, String[] values, Type type) {
+		if (fields == null || fields.length == 0 || values == null || values.length == 0)
+			return this;
+		Set<SearchFilterValue> filterValues = new HashSet<>();
+		for (String value : values) {
+			filterValues.add(new SearchFilterValue(value, type));
+		}
+		filter(fields, filterValues);
+		return this;
+	}
+
+	private SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values) {
+		if (fields == null || fields.length == 0 || values == null || values.size() == 0)
+			return this;
+		Set<String> fieldSet = new HashSet<>();
+		for (String field : fields) {
+			fieldSet.add(field);
+		}
+		multiFilters.add(new MultiSearchFilter(fieldSet, values));
 		return this;
 	}
 
@@ -88,23 +127,19 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQuery build() {
-		return build(Conjunction.AND);
-	}
-
-	public SearchQuery build(Conjunction queryConjunctionType) {
 		SearchQuery searchQuery = new SearchQuery(aggregations);
 		if (page > 0) {
 			searchQuery.setPage(page);
 			searchQuery.setPageSize(pageSize);
 		}
 		if (query != null) {
-			for (String field : queryFields) {
-				searchQuery.addFilter(field, split(query), queryConjunctionType);
-			}
 			searchQuery.setQuery(query);
 		}
 		for (SearchFilter filter : filters.values()) {
 			searchQuery.addFilter(filter.field, filter.values, filter.conjunction);
+		}
+		for (MultiSearchFilter filter : multiFilters) {
+			searchQuery.addFilter(filter);
 		}
 		searchQuery.setSortBy(sortBy);
 		return searchQuery;
