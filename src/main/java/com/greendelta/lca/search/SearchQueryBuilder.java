@@ -1,12 +1,12 @@
 package com.greendelta.lca.search;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import com.greendelta.lca.search.SearchFilterValue.Type;
 import com.greendelta.lca.search.aggregations.SearchAggregation;
 
 public class SearchQueryBuilder {
@@ -53,9 +53,13 @@ public class SearchQueryBuilder {
 		if (!hasAggregation(aggregation.name)) {
 			this.aggregations.add(aggregation);
 		}
-		if (values == null)
+		if (values == null|| values.length == 0)
 			return this;
-		filter(aggregation.name, values, Type.PHRASE);
+		Set<SearchFilterValue> filterValues = new HashSet<>();
+		for (String value : values) {
+			filterValues.add(SearchFilterValue.phrase(value));
+		}
+		filter(aggregation.name, filterValues);
 		return this;
 	}
 
@@ -66,22 +70,11 @@ public class SearchQueryBuilder {
 		return false;
 	}
 
-	public SearchQueryBuilder filter(String field, String value, Type type) {
-		return filter(field, new String[] {value}, type);
+	public SearchQueryBuilder filter(String field, SearchFilterValue value) {
+		return filter(field, Collections.singleton(value));
 	}
 
-	public SearchQueryBuilder filter(String field, String[] values, Type type) {
-		if (field == null || values == null || values.length == 0)
-			return this;
-		Set<SearchFilterValue> filterValues = new HashSet<>();
-		for (String value : values) {
-			filterValues.add(new SearchFilterValue(value, type));
-		}
-		filter(field, filterValues);
-		return this;
-	}
-
-	private SearchQueryBuilder filter(String field, Set<SearchFilterValue> values) {
+	public SearchQueryBuilder filter(String field, Set<SearchFilterValue> values) {
 		if (field == null || values == null || values.size() == 0)
 			return this;
 		SearchFilter filter = this.filters.get(field);
@@ -93,22 +86,11 @@ public class SearchQueryBuilder {
 		return this;
 	}
 
-	public SearchQueryBuilder filter(String[] fields, String value, Type type) {
-		return filter(fields, new String[] {value}, type);
+	public SearchQueryBuilder filter(String[] fields, SearchFilterValue value) {
+		return filter(fields, Collections.singleton(value));
 	}
 
-	public SearchQueryBuilder filter(String[] fields, String[] values, Type type) {
-		if (fields == null || fields.length == 0 || values == null || values.length == 0)
-			return this;
-		Set<SearchFilterValue> filterValues = new HashSet<>();
-		for (String value : values) {
-			filterValues.add(new SearchFilterValue(value, type));
-		}
-		filter(fields, filterValues);
-		return this;
-	}
-
-	private SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values) {
+	public SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values) {
 		if (fields == null || fields.length == 0 || values == null || values.size() == 0)
 			return this;
 		Set<String> fieldSet = new HashSet<>();
@@ -154,11 +136,11 @@ public class SearchQueryBuilder {
 			if ("\"".equals(token)) {
 				escaped = !escaped;
 			} else if (escaped) {
-				splitted.add(new SearchFilterValue(token, Type.PHRASE));
+				splitted.add(SearchFilterValue.phrase(token));
 			} else {
 				token = token.replace("@", " ");
 				for (String word : token.trim().split("\\s+")) {
-					splitted.add(new SearchFilterValue(word, Type.PHRASE));
+					splitted.add(SearchFilterValue.phrase(word));
 				}
 			}
 		}
