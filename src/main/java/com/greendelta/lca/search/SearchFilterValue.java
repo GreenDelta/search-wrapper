@@ -1,5 +1,7 @@
 package com.greendelta.lca.search;
 
+import java.util.Collection;
+
 public class SearchFilterValue {
 
 	public final Object value;
@@ -12,6 +14,10 @@ public class SearchFilterValue {
 	
 	public static SearchFilterValue phrase(String value) {
 		return new SearchFilterValue(value, Type.PHRASE);
+	}
+
+	public static SearchFilterValue phrase(Collection<String> values) {
+		return new SearchFilterValue(values, Type.PHRASE);
 	}
 
 	public static SearchFilterValue wildcard(String value) {
