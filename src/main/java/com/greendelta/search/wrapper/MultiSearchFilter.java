@@ -1,4 +1,4 @@
-package com.greendelta.lca.search;
+package com.greendelta.search.wrapper;
 
 import java.util.Collections;
 import java.util.HashSet;

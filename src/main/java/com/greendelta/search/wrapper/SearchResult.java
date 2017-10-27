@@ -1,9 +1,9 @@
-package com.greendelta.lca.search;
+package com.greendelta.search.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.greendelta.lca.search.aggregations.results.AggregationResult;
+import com.greendelta.search.wrapper.aggregations.results.AggregationResult;
 
 public class SearchResult<T> {
 

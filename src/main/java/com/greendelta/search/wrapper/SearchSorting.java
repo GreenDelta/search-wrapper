@@ -1,4 +1,4 @@
-package com.greendelta.lca.search;
+package com.greendelta.search.wrapper;
 
 public enum SearchSorting {
 

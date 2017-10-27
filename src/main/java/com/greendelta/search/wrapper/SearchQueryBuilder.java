@@ -1,4 +1,4 @@
-package com.greendelta.lca.search;
+package com.greendelta.search.wrapper;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import com.greendelta.lca.search.aggregations.SearchAggregation;
+import com.greendelta.search.wrapper.aggregations.SearchAggregation;
 
 public class SearchQueryBuilder {
 

@@ -1,4 +1,4 @@
-package com.greendelta.lca.search.aggregations.results;
+package com.greendelta.search.wrapper.aggregations.results;
 
 import java.util.List;
 

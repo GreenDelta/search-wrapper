@@ -1,4 +1,4 @@
-package com.greendelta.lca.search.aggregations;
+package com.greendelta.search.wrapper.aggregations;
 
 public abstract class SearchAggregation {
 	
