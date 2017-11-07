@@ -11,7 +11,7 @@ public class SearchFilterValue {
 		this.value = value;
 		this.type = type;
 	}
-	
+
 	public static SearchFilterValue phrase(String value) {
 		return new SearchFilterValue(value, Type.PHRASE);
 	}
@@ -30,6 +30,10 @@ public class SearchFilterValue {
 
 	public static SearchFilterValue to(Number value) {
 		return new SearchFilterValue(value, Type.TO);
+	}
+
+	public static SearchFilterValue is(Number value) {
+		return new SearchFilterValue(value, Type.PHRASE);
 	}
 
 	public static enum Type {
