@@ -53,7 +53,7 @@ public class SearchQueryBuilder {
 		if (!hasAggregation(aggregation.name)) {
 			this.aggregations.add(aggregation);
 		}
-		if (values == null|| values.length == 0)
+		if (values == null || values.length == 0)
 			return this;
 		Set<SearchFilterValue> filterValues = new HashSet<>();
 		for (String value : values) {
@@ -71,15 +71,19 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQueryBuilder filter(String field, SearchFilterValue value) {
-		return filter(field, Collections.singleton(value));
+		return filter(field, new HashSet<>(Collections.singleton(value)));
 	}
 
 	public SearchQueryBuilder filter(String field, Set<SearchFilterValue> values) {
+		return filter(field, values, null);
+	}
+
+	public SearchQueryBuilder filter(String field, Set<SearchFilterValue> values, Conjunction conjunction) {
 		if (field == null || values == null || values.size() == 0)
 			return this;
 		SearchFilter filter = this.filters.get(field);
 		if (filter == null) {
-			this.filters.put(field, filter = new SearchFilter(field, values));
+			this.filters.put(field, filter = new SearchFilter(field, values, conjunction));
 		} else {
 			filter.values.addAll(values);
 		}
@@ -87,7 +91,7 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQueryBuilder filter(String[] fields, SearchFilterValue value) {
-		return filter(fields, Collections.singleton(value));
+		return filter(fields, new HashSet<>(Collections.singleton(value)));
 	}
 
 	public SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values) {
