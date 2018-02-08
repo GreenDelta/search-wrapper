@@ -24,21 +24,25 @@ public class SearchFilterValue {
 		return new SearchFilterValue(value, Type.WILDCART);
 	}
 
-	public static SearchFilterValue from(Number value) {
-		return new SearchFilterValue(value, Type.FROM);
+	public static SearchFilterValue from(Object from) {
+		return new SearchFilterValue(new Object[] { from, null }, Type.RANGE);
 	}
 
-	public static SearchFilterValue to(Number value) {
-		return new SearchFilterValue(value, Type.TO);
+	public static SearchFilterValue to(Object to) {
+		return new SearchFilterValue(new Object[] { null, to }, Type.RANGE);
 	}
 
-	public static SearchFilterValue is(Number value) {
-		return new SearchFilterValue(value, Type.PHRASE);
+	public static SearchFilterValue range(Object from, Object to) {
+		return new SearchFilterValue(new Object[] { from, to }, Type.RANGE);
+	}
+
+	public static SearchFilterValue term(Object value) {
+		return new SearchFilterValue(value, Type.TERM);
 	}
 
 	public static enum Type {
 
-		PHRASE, WILDCART, TO, FROM;
+		PHRASE, WILDCART, RANGE, TERM;
 
 	}
 
