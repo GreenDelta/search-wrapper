@@ -18,6 +18,7 @@ public class SearchQueryBuilder {
 	private Set<MultiSearchFilter> multiFilters = new HashSet<>();
 	private Set<SearchAggregation> aggregations = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
+	private boolean fullResult = true;
 
 	public SearchQueryBuilder query(String query, String queryField) {
 		if (query == null || query.isEmpty() || queryField == null || queryField.isEmpty())
@@ -47,6 +48,11 @@ public class SearchQueryBuilder {
 		return this;
 	}
 
+	public SearchQueryBuilder fullResult(boolean value) {
+		this.fullResult = value;
+		return this;
+	}
+
 	public SearchQueryBuilder aggregation(SearchAggregation aggregation, String... values) {
 		if (aggregation == null)
 			return this;
@@ -57,7 +63,7 @@ public class SearchQueryBuilder {
 			return this;
 		Set<SearchFilterValue> filterValues = new HashSet<>();
 		for (String value : values) {
-			filterValues.add(SearchFilterValue.phrase(value));
+			filterValues.add(SearchFilterValue.term(value));
 		}
 		filter(aggregation.name, filterValues);
 		return this;
@@ -127,6 +133,7 @@ public class SearchQueryBuilder {
 		for (MultiSearchFilter filter : multiFilters) {
 			searchQuery.addFilter(filter);
 		}
+		searchQuery.setFullResult(fullResult);
 		searchQuery.setSortBy(sortBy);
 		return searchQuery;
 	}

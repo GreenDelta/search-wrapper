@@ -40,6 +40,14 @@ public class SearchFilterValue {
 		return new SearchFilterValue(value, Type.TERM);
 	}
 
+	@Override
+	public String toString() {
+		String s = "{";
+		s += "type: " + type.name() + ", ";
+		s += "value: " + value;
+		return s + "}";
+	}
+
 	public static enum Type {
 
 		PHRASE, WILDCART, RANGE, TERM;

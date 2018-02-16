@@ -20,6 +20,7 @@ public class SearchQuery {
 	private String query;
 	private int page;
 	private int pageSize;
+	private boolean fullResult;
 
 	SearchQuery(Set<SearchAggregation> aggregations) {
 		this.aggregations = aggregations != null ? aggregations : new HashSet<>();
@@ -39,7 +40,7 @@ public class SearchQuery {
 			filter.values.addAll(values);
 		}
 	}
-	
+
 	void addFilter(MultiSearchFilter filter) {
 		this.multiFilters.add(filter);
 	}
@@ -82,6 +83,14 @@ public class SearchQuery {
 
 	public int getPage() {
 		return page;
+	}
+
+	public boolean getFullResult() {
+		return fullResult;
+	}
+
+	void setFullResult(boolean value) {
+		this.fullResult = value;
 	}
 
 	void setPage(int page) {
