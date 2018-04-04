@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.greendelta.search.wrapper.aggregations.SearchAggregation;
+import com.greendelta.search.wrapper.score.IScore;
 
 public class SearchQuery {
 
@@ -16,6 +17,7 @@ public class SearchQuery {
 	private final Set<SearchAggregation> aggregations;
 	private final List<SearchFilter> filters = new ArrayList<>();
 	private final List<MultiSearchFilter> multiFilters = new ArrayList<>();
+	private final List<IScore> scores = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
 	private String query;
 	private int page;
@@ -54,6 +56,10 @@ public class SearchQuery {
 		this.query = query;
 	}
 
+	void addScore(IScore score) {
+		this.scores.add(score);
+	}
+	
 	public Set<SearchAggregation> getAggregations() {
 		return aggregations;
 	}
@@ -75,6 +81,10 @@ public class SearchQuery {
 
 	public List<MultiSearchFilter> getMultiFilters() {
 		return multiFilters;
+	}
+	
+	public List<IScore> getScores() {
+		return scores;
 	}
 
 	public Map<String, SearchSorting> getSortBy() {
