@@ -75,7 +75,7 @@ public class AggregationResult {
 			if (index >= depth)
 				break;
 			if (!joined.isEmpty() && separator != null) {
-				joined += '/';
+				joined += separator;
 			}
 			joined += array[index];
 		}
