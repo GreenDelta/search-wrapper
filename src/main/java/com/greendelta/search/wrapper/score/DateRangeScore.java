@@ -29,15 +29,12 @@ public class DateRangeScore extends AbstractScore {
 				new Condition("_value_", "<=", upperField));
 	}
 
-	public DateRangeScore addCase(String comparator, double limit, double weight) {
-		return (DateRangeScore) addCase(weight,
-				new Condition("distance", comparator, limit));
+	public DateRangeScore addCase(double weight, String comparator, double value) {
+		return (DateRangeScore) addCase("distance", weight, comparator, value);
 	}
 
-	public DateRangeScore addCase(String lowerComparator, double lowerLimit, String upperComparator, double upperLimit,
-			double weight) {
-		return (DateRangeScore) addCase(weight,
-				new Condition("distance", lowerComparator, lowerLimit),
-				new Condition("distance", upperComparator, upperLimit));
+	public DateRangeScore addCase(double weight, String lowerComparator, double lowerValue, String upperComparator,
+			double upperValue) {
+		return (DateRangeScore) addCase("distance", weight, lowerComparator, lowerValue, upperComparator, upperValue);
 	}
 }
