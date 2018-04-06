@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import com.greendelta.search.wrapper.aggregations.SearchAggregation;
-import com.greendelta.search.wrapper.score.IScore;
+import com.greendelta.search.wrapper.score.Score;
 
 public class SearchQueryBuilder {
 
@@ -18,7 +18,7 @@ public class SearchQueryBuilder {
 	private Map<String, SearchFilter> filters = new HashMap<>();
 	private Set<MultiSearchFilter> multiFilters = new HashSet<>();
 	private Set<SearchAggregation> aggregations = new HashSet<>();
-	private Set<IScore> scores = new HashSet<>();
+	private Set<Score> scores = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 	private boolean fullResult = true;
 
@@ -113,7 +113,7 @@ public class SearchQueryBuilder {
 		return this;
 	}
 
-	public SearchQueryBuilder score(IScore score) {
+	public SearchQueryBuilder score(Score score) {
 		this.scores.add(score);
 		return this;
 	}
@@ -140,7 +140,7 @@ public class SearchQueryBuilder {
 		for (MultiSearchFilter filter : multiFilters) {
 			searchQuery.addFilter(filter);
 		}
-		for (IScore score : scores) {
+		for (Score score : scores) {
 			searchQuery.addScore(score);
 		}
 		searchQuery.setFullResult(fullResult);
