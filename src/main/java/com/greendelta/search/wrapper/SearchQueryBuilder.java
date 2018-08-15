@@ -18,6 +18,7 @@ public class SearchQueryBuilder {
 	private Map<String, SearchFilter> filters = new HashMap<>();
 	private Set<MultiSearchFilter> multiFilters = new HashSet<>();
 	private Set<SearchAggregation> aggregations = new HashSet<>();
+	private Set<LinearDecayFunction> functions = new HashSet<>();
 	private Set<Score> scores = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 	private boolean fullResult = true;
@@ -117,6 +118,11 @@ public class SearchQueryBuilder {
 		this.scores.add(score);
 		return this;
 	}
+	
+	public SearchQueryBuilder score(LinearDecayFunction function) {
+		this.functions.add(function);
+		return this;
+	}
 
 	public SearchQueryBuilder sortBy(String field, SearchSorting order) {
 		if (field == null || order == null)
@@ -142,6 +148,9 @@ public class SearchQueryBuilder {
 		}
 		for (Score score : scores) {
 			searchQuery.addScore(score);
+		}
+		for (LinearDecayFunction function : functions) {
+			searchQuery.addScore(function);
 		}
 		searchQuery.setFullResult(fullResult);
 		searchQuery.setSortBy(sortBy);

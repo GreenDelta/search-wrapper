@@ -18,6 +18,7 @@ public class SearchQuery {
 	private final List<SearchFilter> filters = new ArrayList<>();
 	private final List<MultiSearchFilter> multiFilters = new ArrayList<>();
 	private final List<Score> scores = new ArrayList<>();
+	private final List<LinearDecayFunction> functions = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
 	private String query;
 	private int page;
@@ -60,6 +61,10 @@ public class SearchQuery {
 		this.scores.add(score);
 	}
 
+	void addScore(LinearDecayFunction function) {
+		this.functions.add(function);
+	}
+	
 	public Set<SearchAggregation> getAggregations() {
 		return aggregations;
 	}
@@ -85,6 +90,10 @@ public class SearchQuery {
 
 	public List<Score> getScores() {
 		return scores;
+	}
+	
+	public List<LinearDecayFunction> getFunctions() {
+		return functions;
 	}
 
 	public Map<String, SearchSorting> getSortBy() {
