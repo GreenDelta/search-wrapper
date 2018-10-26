@@ -24,6 +24,8 @@ public interface SearchClient {
 
 	List<Map<String, Object>> get(Set<String> ids);
 
+	void clear();
+	
 	void delete();
 
 }
