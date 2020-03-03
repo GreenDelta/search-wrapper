@@ -8,11 +8,19 @@ public interface SearchClient {
 
 	SearchResult<Map<String, Object>> search(SearchQuery searchQuery);
 
+	Set<String> searchIds(SearchQuery searchQuery);
+
 	void create(Map<String, String> settings);
 
 	void index(String id, Map<String, Object> content);
 
 	void index(Map<String, Map<String, Object>> contentsById);
+
+	void update(String id, Map<String, Object> content);
+
+	void update(Set<String> ids, Map<String, Object> content);
+
+	void update(Map<String, Map<String, Object>> contentsById);
 
 	void remove(String id);
 

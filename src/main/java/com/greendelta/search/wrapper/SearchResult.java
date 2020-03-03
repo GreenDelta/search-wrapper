@@ -11,7 +11,7 @@ public class SearchResult<T> {
 	public final List<AggregationResult> aggregations = new ArrayList<>();
 	public final ResultInfo resultInfo = new ResultInfo();
 
-	public class ResultInfo {
+	public static class ResultInfo {
 
 		public int pageSize;
 		public long count;
