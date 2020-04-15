@@ -18,7 +18,11 @@ public interface SearchClient {
 
 	void update(String id, Map<String, Object> content);
 
+	void update(String id, String script, Map<String, Object> parameters);
+
 	void update(Set<String> ids, Map<String, Object> content);
+
+	void update(Set<String> ids, String script, Map<String, Object> parameters);
 
 	void update(Map<String, Map<String, Object>> contentsById);
 
