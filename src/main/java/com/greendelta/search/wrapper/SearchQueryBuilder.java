@@ -157,7 +157,7 @@ public class SearchQueryBuilder {
 		return searchQuery;
 	}
 
-	private static Set<SearchFilterValue> split(String query) {
+	private Set<SearchFilterValue> split(String query) {
 		Set<SearchFilterValue> splitted = new HashSet<>();
 		StringTokenizer splitter = new StringTokenizer(query, "\"", true);
 		boolean escaped = false;
@@ -170,7 +170,7 @@ public class SearchQueryBuilder {
 			} else {
 				token = token.replace("@", " ");
 				for (String word : token.trim().split("\\s+")) {
-					splitted.add(SearchFilterValue.phrase(word));
+					splitted.add(SearchFilterValue.wildcard(word));
 				}
 			}
 		}
