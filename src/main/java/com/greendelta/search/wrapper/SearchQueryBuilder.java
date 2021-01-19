@@ -24,18 +24,26 @@ public class SearchQueryBuilder {
 	private boolean fullResult = true;
 
 	public SearchQueryBuilder query(String query, String queryField) {
+		return query(query, queryField, null);
+	}
+
+	public SearchQueryBuilder query(String query, String queryField, Conjunction conjunction) {
 		if (query == null || query.isEmpty() || queryField == null || queryField.isEmpty())
 			return this;
 		this.query = query;
-		filter(queryField, split(query));
+		filter(queryField, split(query), conjunction);
 		return this;
 	}
 
 	public SearchQueryBuilder query(String query, String[] queryFields) {
+		return query(query, queryFields, null);
+	}
+
+	public SearchQueryBuilder query(String query, String[] queryFields, Conjunction conjunction) {
 		if (query == null || query.isEmpty() || queryFields == null || queryFields.length == 0)
 			return this;
 		if (queryFields.length == 1)
-			return query(query, queryFields[0]);
+			return query(query, queryFields[0], conjunction);
 		this.query = query;
 		filter(queryFields, split(query));
 		return this;
@@ -69,6 +77,18 @@ public class SearchQueryBuilder {
 			filterValues.add(SearchFilterValue.term(value));
 		}
 		filter(aggregation.name, filterValues);
+		return this;
+	}
+
+	public SearchQueryBuilder aggregation(SearchAggregation aggregation, Set<SearchFilterValue> values) {
+		if (aggregation == null)
+			return this;
+		if (!hasAggregation(aggregation.name)) {
+			this.aggregations.add(aggregation);
+		}
+		if (values == null || values.size() == 0)
+			return this;
+		filter(aggregation.name, values);
 		return this;
 	}
 

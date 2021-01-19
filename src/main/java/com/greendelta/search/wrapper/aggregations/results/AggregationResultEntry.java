@@ -8,11 +8,17 @@ public class AggregationResultEntry {
 
 	public final String key;
 	public final long count;
+	public final Object data;
 	public final List<AggregationResultEntry> subEntries = new ArrayList<>();
 
-	AggregationResultEntry(String key, long count) {
+	public AggregationResultEntry(String key, long count) {
+		this(key, count, key);
+	}
+
+	public  AggregationResultEntry(String key, long count, Object data) {
 		this.key = key;
 		this.count = count;
+		this.data = data;
 	}
 
 	@Override
