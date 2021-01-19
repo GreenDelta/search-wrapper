@@ -45,7 +45,7 @@ public class SearchQueryBuilder {
 		if (queryFields.length == 1)
 			return query(query, queryFields[0], conjunction);
 		this.query = query;
-		filter(queryFields, split(query));
+		filter(queryFields, split(query), conjunction);
 		return this;
 	}
 
@@ -120,17 +120,17 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQueryBuilder filter(String[] fields, SearchFilterValue value) {
-		return filter(fields, new HashSet<>(Collections.singleton(value)));
+		return filter(fields, new HashSet<>(Collections.singleton(value)), null);
 	}
 
-	public SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values) {
+	public SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values, Conjunction conjunction) {
 		if (fields == null || fields.length == 0 || values == null || values.size() == 0)
 			return this;
 		Set<String> fieldSet = new HashSet<>();
 		for (String field : fields) {
 			fieldSet.add(field);
 		}
-		multiFilters.add(new MultiSearchFilter(fieldSet, values));
+		multiFilters.add(new MultiSearchFilter(fieldSet, values, conjunction));
 		return this;
 	}
 
