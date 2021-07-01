@@ -12,7 +12,6 @@ import com.greendelta.search.wrapper.score.Score;
 
 public class SearchQueryBuilder {
 
-	private String query;
 	private int page = 0;
 	private int pageSize = SearchQuery.DEFAULT_PAGE_SIZE;
 	private Map<String, SearchFilter> filters = new HashMap<>();
@@ -30,7 +29,6 @@ public class SearchQueryBuilder {
 	public SearchQueryBuilder query(String query, String queryField, Conjunction conjunction) {
 		if (query == null || query.isEmpty() || queryField == null || queryField.isEmpty())
 			return this;
-		this.query = query;
 		filter(queryField, split(query), conjunction);
 		return this;
 	}
@@ -44,7 +42,6 @@ public class SearchQueryBuilder {
 			return this;
 		if (queryFields.length == 1)
 			return query(query, queryFields[0], conjunction);
-		this.query = query;
 		filter(queryFields, split(query), conjunction);
 		return this;
 	}
@@ -76,7 +73,7 @@ public class SearchQueryBuilder {
 		for (String value : values) {
 			filterValues.add(SearchFilterValue.term(value));
 		}
-		filter(aggregation.name, filterValues);
+		filter(aggregation.field, filterValues);
 		return this;
 	}
 
@@ -88,7 +85,7 @@ public class SearchQueryBuilder {
 		}
 		if (values == null || values.size() == 0)
 			return this;
-		filter(aggregation.name, values);
+		filter(aggregation.field, values);
 		return this;
 	}
 
@@ -156,9 +153,6 @@ public class SearchQueryBuilder {
 		if (page > 0) {
 			searchQuery.setPage(page);
 			searchQuery.setPageSize(pageSize);
-		}
-		if (query != null) {
-			searchQuery.setQuery(query);
 		}
 		for (SearchFilter filter : filters.values()) {
 			searchQuery.addFilter(filter.field, filter.values, filter.conjunction);

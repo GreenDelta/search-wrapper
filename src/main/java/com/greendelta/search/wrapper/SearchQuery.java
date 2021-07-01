@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.greendelta.search.wrapper.aggregations.SearchAggregation;
 import com.greendelta.search.wrapper.score.Score;
@@ -20,7 +20,6 @@ public class SearchQuery {
 	private final List<Score> scores = new ArrayList<>();
 	private final List<LinearDecayFunction> functions = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
-	private String query;
 	private int page;
 	private int pageSize;
 	private boolean fullResult;
@@ -53,10 +52,6 @@ public class SearchQuery {
 		this.sortBy.putAll(sortBy);
 	}
 
-	void setQuery(String query) {
-		this.query = query;
-	}
-
 	void addScore(Score score) {
 		this.scores.add(score);
 	}
@@ -64,20 +59,15 @@ public class SearchQuery {
 	void addScore(LinearDecayFunction function) {
 		this.functions.add(function);
 	}
-	
+
 	public Set<SearchAggregation> getAggregations() {
 		return aggregations;
 	}
 
-	public SearchAggregation getAggregation(String name) {
-		for (SearchAggregation aggregation : aggregations)
-			if (aggregation.name.equals(name))
-				return aggregation;
-		return null;
-	}
-
-	public boolean hasAggregation(String name) {
-		return getAggregation(name) != null;
+	public List<SearchAggregation> getAggregationsByField(String field) {
+		return aggregations.stream()
+				.filter(aggregation -> aggregation.field.equals(field))
+				.collect(Collectors.toList());
 	}
 
 	public List<SearchFilter> getFilters() {
@@ -91,7 +81,7 @@ public class SearchQuery {
 	public List<Score> getScores() {
 		return scores;
 	}
-	
+
 	public List<LinearDecayFunction> getFunctions() {
 		return functions;
 	}
@@ -126,58 +116,6 @@ public class SearchQuery {
 
 	public boolean isPaged() {
 		return page > 0;
-	}
-
-	@Override
-	public String toString() {
-		String s = "{page=" + page + ", ";
-		s += "pageSize=" + pageSize + ", ";
-		s += "query=" + (query != null ? query : "");
-		s += "aggregations=" + joinFilters(true) + ", ";
-		s += "filters=" + joinFilters(false) + ", ";
-		s += "multiFilters=" + joinMultiFilters() + ", ";
-		return s + "sortBy=" + joinSortBy() + "}";
-	}
-
-	private String joinSortBy() {
-		String s = "[";
-		int i = 0;
-		for (Entry<String, SearchSorting> entry : sortBy.entrySet()) {
-			s += entry.getKey() + "=" + entry.getValue();
-			i++;
-			if (i < sortBy.size()) {
-				s += ", ";
-			}
-		}
-		return s + "]";
-	}
-
-	private String joinFilters(boolean aggregations) {
-		String s = "[";
-		int i = 0;
-		for (SearchFilter filter : filters) {
-			if (hasAggregation(filter.field) != aggregations)
-				continue;
-			s += filter.toString();
-			i++;
-			if (i < filters.size()) {
-				s += ", ";
-			}
-		}
-		return s + "]";
-	}
-
-	private String joinMultiFilters() {
-		String s = "[";
-		int i = 0;
-		for (MultiSearchFilter filter : multiFilters) {
-			s += filter.toString();
-			i++;
-			if (i < multiFilters.size()) {
-				s += ", ";
-			}
-		}
-		return s + "]";
 	}
 
 }
