@@ -1,5 +1,6 @@
 package com.greendelta.search.wrapper;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,19 +63,13 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQueryBuilder aggregation(SearchAggregation aggregation, String... values) {
-		if (aggregation == null)
-			return this;
-		if (!hasAggregation(aggregation.name)) {
-			this.aggregations.add(aggregation);
-		}
 		if (values == null || values.length == 0)
-			return this;
-		Set<SearchFilterValue> filterValues = new HashSet<>();
-		for (String value : values) {
-			filterValues.add(SearchFilterValue.term(value));
-		}
-		filter(aggregation.field, filterValues);
-		return this;
+			return aggregation(aggregation, new HashSet<>());
+		return aggregation(aggregation, SearchFilterValue.term(Arrays.asList(values)));
+	}
+
+	public SearchQueryBuilder aggregation(SearchAggregation aggregation, SearchFilterValue value) {
+		return aggregation(aggregation, Collections.singleton(value));
 	}
 
 	public SearchQueryBuilder aggregation(SearchAggregation aggregation, Set<SearchFilterValue> values) {
