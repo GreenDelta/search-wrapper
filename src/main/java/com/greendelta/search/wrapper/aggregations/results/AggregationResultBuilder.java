@@ -3,10 +3,12 @@ package com.greendelta.search.wrapper.aggregations.results;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.greendelta.search.wrapper.SearchFilterType;
+
 public class AggregationResultBuilder {
 
 	private String name;
-	private String type;
+	private SearchFilterType type;
 	private long totalCount;
 	private List<AggregationResultEntry> entries = new ArrayList<>();
 	
@@ -15,7 +17,7 @@ public class AggregationResultBuilder {
 		return this;
 	}
 
-	public AggregationResultBuilder type(String type) {
+	public AggregationResultBuilder type(SearchFilterType type) {
 		this.type = type;
 		return this;
 	}

@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.greendelta.search.wrapper.SearchFilterType;
+
 public class AggregationResult {
 
 	public final String name;
-	public final String type;
+	public final SearchFilterType type;
 	public final long totalCount;
 	public final List<AggregationResultEntry> entries;
 
-	AggregationResult(String name, String type, long totalCount, List<AggregationResultEntry> entries) {
+	AggregationResult(String name, SearchFilterType type, long totalCount, List<AggregationResultEntry> entries) {
 		this.name = name;
 		this.type = type;
 		this.totalCount = totalCount;
