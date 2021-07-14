@@ -27,7 +27,7 @@ public class MultiSearchFilter {
 		if (fields == null || fields.isEmpty())
 			throw new IllegalArgumentException("Fields can not be empty");
 		this.fields = Collections.unmodifiableSet(fields);
-		this.values = values == null ? new HashSet<>() : values;
+		this.values = values == null ? new HashSet<>() : new HashSet<>(values);
 		this.conjunction = conjunction == null ? Conjunction.OR : conjunction;
 	}
 

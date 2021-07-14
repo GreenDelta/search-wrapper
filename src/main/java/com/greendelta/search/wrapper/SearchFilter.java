@@ -23,7 +23,7 @@ public class SearchFilter {
 
 	public SearchFilter(String field, Set<SearchFilterValue> values, Conjunction conjunction) {
 		this.field = field;
-		this.values = values;
+		this.values = values == null ? new HashSet<>() : new HashSet<>(values);
 		this.conjunction = conjunction == null ? Conjunction.OR : conjunction;
 	}
 
