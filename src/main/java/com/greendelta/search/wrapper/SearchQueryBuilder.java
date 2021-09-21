@@ -138,7 +138,7 @@ public class SearchQueryBuilder {
 
 	public SearchQueryBuilder sortBy(String field, SearchSorting order) {
 		if (field == null || order == null)
-			return null;
+			return this;
 		this.sortBy.put(field, order);
 		return this;
 	}
