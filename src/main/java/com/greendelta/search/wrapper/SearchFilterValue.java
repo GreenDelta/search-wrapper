@@ -35,7 +35,7 @@ public class SearchFilterValue {
 	}
 
 	public static SearchFilterValue wildcard(String value, Float boost) {
-		return new SearchFilterValue(value, SearchFilterType.WILDCART, boost);
+		return new SearchFilterValue(value, SearchFilterType.WILDCARD, boost);
 	}
 
 	public static SearchFilterValue from(Object from) {
