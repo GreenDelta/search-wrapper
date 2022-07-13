@@ -20,6 +20,7 @@ public class SearchQueryBuilder {
 	private Set<SearchAggregation> aggregations = new HashSet<>();
 	private Set<LinearDecayFunction> functions = new HashSet<>();
 	private Set<Score> scores = new HashSet<>();
+	private Set<String> fields = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 	private boolean fullResult = true;
 
@@ -31,6 +32,14 @@ public class SearchQueryBuilder {
 		if (query == null || query.isEmpty() || queryField == null || queryField.isEmpty())
 			return this;
 		filter(queryField, split(query), conjunction);
+		return this;
+	}
+
+	public SearchQueryBuilder fields(String... fields) {
+		if (fields == null)
+			return this;
+		fullResult = false;
+		this.fields.addAll(Arrays.asList(fields));
 		return this;
 	}
 
@@ -130,7 +139,7 @@ public class SearchQueryBuilder {
 		this.scores.add(score);
 		return this;
 	}
-	
+
 	public SearchQueryBuilder score(LinearDecayFunction function) {
 		this.functions.add(function);
 		return this;
@@ -148,6 +157,9 @@ public class SearchQueryBuilder {
 		if (page > 0) {
 			searchQuery.setPage(page);
 			searchQuery.setPageSize(pageSize);
+		}
+		for (String field : fields) {
+			searchQuery.addField(field);
 		}
 		for (SearchFilter filter : filters.values()) {
 			searchQuery.addFilter(filter.field, filter.values, filter.conjunction);

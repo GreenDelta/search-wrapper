@@ -20,12 +20,17 @@ public class SearchQuery {
 	private final List<Score> scores = new ArrayList<>();
 	private final List<LinearDecayFunction> functions = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
+	private final Set<String> fields = new HashSet<>();
 	private int page;
 	private int pageSize;
 	private boolean fullResult;
 
 	SearchQuery(Set<SearchAggregation> aggregations) {
 		this.aggregations = aggregations != null ? aggregations : new HashSet<>();
+	}
+	
+	void addField(String field) {
+		this.fields.add(field);
 	}
 
 	void addFilter(String field, Set<SearchFilterValue> values, Conjunction type) {
@@ -88,6 +93,10 @@ public class SearchQuery {
 
 	public Map<String, SearchSorting> getSortBy() {
 		return sortBy;
+	}
+
+	public Set<String> getFields() {
+		return fields;
 	}
 
 	public int getPage() {
