@@ -20,7 +20,7 @@ public class SearchQueryBuilder {
 	private Set<SearchAggregation> aggregations = new HashSet<>();
 	private Set<LinearDecayFunction> functions = new HashSet<>();
 	private Set<Score> scores = new HashSet<>();
-	private Set<String> fields = new HashSet<>();
+	private Set<SearchField> fields = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 	private boolean fullResult = true;
 
@@ -36,10 +36,22 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQueryBuilder fields(String... fields) {
+		return fields(false, fields);
+	}
+
+	public SearchQueryBuilder arrayFields(String... fields) {
+		return fields(true, fields);
+	}
+
+	private SearchQueryBuilder fields(boolean array, String... fields) {
 		if (fields == null)
 			return this;
 		fullResult = false;
-		this.fields.addAll(Arrays.asList(fields));
+		for (String field : fields) {
+			if (array && field.indexOf(".") != field.lastIndexOf("."))
+				throw new IllegalArgumentException("Only one level nested arrays are supported");
+			this.fields.add(new SearchField(field, array));
+		}
 		return this;
 	}
 
@@ -158,7 +170,7 @@ public class SearchQueryBuilder {
 			searchQuery.setPage(page);
 			searchQuery.setPageSize(pageSize);
 		}
-		for (String field : fields) {
+		for (SearchField field : fields) {
 			searchQuery.addField(field);
 		}
 		for (SearchFilter filter : filters.values()) {

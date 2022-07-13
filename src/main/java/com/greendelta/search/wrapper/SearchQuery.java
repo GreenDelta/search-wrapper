@@ -20,7 +20,7 @@ public class SearchQuery {
 	private final List<Score> scores = new ArrayList<>();
 	private final List<LinearDecayFunction> functions = new ArrayList<>();
 	private final Map<String, SearchSorting> sortBy = new HashMap<>();
-	private final Set<String> fields = new HashSet<>();
+	private final Set<SearchField> fields = new HashSet<>();
 	private int page;
 	private int pageSize;
 	private boolean fullResult;
@@ -29,7 +29,7 @@ public class SearchQuery {
 		this.aggregations = aggregations != null ? aggregations : new HashSet<>();
 	}
 	
-	void addField(String field) {
+	void addField(SearchField field) {
 		this.fields.add(field);
 	}
 
@@ -95,7 +95,7 @@ public class SearchQuery {
 		return sortBy;
 	}
 
-	public Set<String> getFields() {
+	public Set<SearchField> getFields() {
 		return fields;
 	}
 
