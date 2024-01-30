@@ -29,13 +29,13 @@ public class SearchFilter {
 
 	@Override
 	public String toString() {
-		String s = "{" + field + "=";
+		var s = "{" + field + "=";
 		if (values.size() == 0)
 			return s + "}";
 		if (values.size() == 1)
 			return s + values.iterator().next().value + "}";
-		SearchFilterValue[] values = this.values.toArray(new SearchFilterValue[this.values.size()]);
-		for (int i = 0; i < values.length; i++) {
+		var values = this.values.toArray(new SearchFilterValue[this.values.size()]);
+		for (var i = 0; i < values.length; i++) {
 			s += values[i];
 			if (i < values.length - 1) {
 				s += " " + conjunction.name() + " ";
@@ -45,7 +45,7 @@ public class SearchFilter {
 	}
 
 	private static Set<SearchFilterValue> toSet(SearchFilterValue value) {
-		Set<SearchFilterValue> set = new HashSet<>();
+		var set = new HashSet<SearchFilterValue>();
 		set.add(value);
 		return set;
 	}

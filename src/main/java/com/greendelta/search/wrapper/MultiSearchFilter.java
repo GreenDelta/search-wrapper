@@ -33,11 +33,11 @@ public class MultiSearchFilter {
 
 	@Override
 	public String toString() {
-		String s = "{";
-		String[] fields = this.fields.toArray(new String[this.fields.size()]);
-		for (int i = 0; i < fields.length; i++) {
+		var s = "{";
+		var fields = this.fields.toArray(new String[this.fields.size()]);
+		for (var i = 0; i < fields.length; i++) {
 			s += fields[i] + "=";
-			for (int j = 0; j < fields.length; j++) {
+			for (var j = 0; j < fields.length; j++) {
 				s += fields[j];
 				if (j < fields.length - 1) {
 					s += " AND ";
@@ -49,10 +49,10 @@ public class MultiSearchFilter {
 			return s + "}";
 		if (values.size() == 1)
 			return s + values.iterator().next().value + "}";
-		String[] values = this.values.toArray(new String[this.values.size()]);
-		for (int i = 0; i < values.length; i++) {
+		var values = this.values.toArray(new String[this.values.size()]);
+		for (var i = 0; i < values.length; i++) {
 			s += values[i] + "=";
-			for (int j = 0; j < values.length; j++) {
+			for (var j = 0; j < values.length; j++) {
 				s += values[j];
 				if (j < values.length - 1) {
 					s += " " + conjunction.name() + " ";
@@ -63,7 +63,7 @@ public class MultiSearchFilter {
 	}
 
 	private static <T> Set<T> toSet(T value) {
-		Set<T> set = new HashSet<>();
+		var set = new HashSet<T>();
 		set.add(value);
 		return set;
 	}

@@ -72,7 +72,7 @@ public class SearchFilterValue {
 
 	@Override
 	public String toString() {
-		String s = "{";
+		var s = "{";
 		s += "type: " + type.name() + ", ";
 		s += "value: " + value;
 		return s + "}";

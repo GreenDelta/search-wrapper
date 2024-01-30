@@ -21,7 +21,7 @@ public class SearchResult<T> {
 
 		@Override
 		public String toString() {
-			String s = "totalCount=" + totalCount + ", ";
+			var s = "totalCount=" + totalCount + ", ";
 			s += "pageSize=" + pageSize + ", ";
 			s += "currentPage=" + currentPage + ", ";
 			s += "pageCount=" + pageCount + ", ";
@@ -32,10 +32,10 @@ public class SearchResult<T> {
 
 	@Override
 	public String toString() {
-		String s = "{resultInfo={" + resultInfo.toString() + "}, ";
+		var s = "{resultInfo={" + resultInfo.toString() + "}, ";
 		s += "aggregations=[";
-		int i = 0;
-		for (AggregationResult r : aggregations) {
+		var i = 0;
+		for (var r : aggregations) {
 			s += r.toString();
 			i++;
 			if (i < aggregations.size()) {

@@ -35,7 +35,7 @@ public class SearchQuery {
 
 	void addFilter(String field, Set<SearchFilterValue> values, Conjunction type) {
 		SearchFilter filter = null;
-		for (SearchFilter f : filters) {
+		for (var f : filters) {
 			if (f.field.equals(field)) {
 				filter = f;
 				break;

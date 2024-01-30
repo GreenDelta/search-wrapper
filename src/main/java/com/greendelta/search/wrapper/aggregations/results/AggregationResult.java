@@ -3,7 +3,6 @@ package com.greendelta.search.wrapper.aggregations.results;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 import com.greendelta.search.wrapper.SearchFilterType;
@@ -24,13 +23,13 @@ public class AggregationResult {
 
 	@Override
 	public String toString() {
-		String s = "{name=" + name + ", ";
+		var s = "{name=" + name + ", ";
 		s += "type=" + type + ", ";
 		s += "totalCount=" + totalCount + ", ";
 		s += "entries=[";
 		if (entries != null) {
-			int i = 0;
-			for (AggregationResultEntry e : entries) {
+			var i = 0;
+			for (var e : entries) {
 				s += e.toString();
 				i++;
 				if (i < entries.size()) {
@@ -46,15 +45,15 @@ public class AggregationResult {
 	}
 
 	public void group(String separator, Function<String, String[]> doSplit) {
-		Map<String, AggregationResultEntry> all = new HashMap<>();
-		for (AggregationResultEntry entry : entries) {
+		var all = new HashMap<String, AggregationResultEntry>();
+		for (var entry : entries) {
 			all.put(entry.key, entry);
 		}
-		List<AggregationResultEntry> topLevel = new ArrayList<>();
-		for (AggregationResultEntry entry : entries) {
-			String[] split = doSplit.apply(entry.key);
-			int depth = 0;
-			String parent = "";
+		var topLevel = new ArrayList<AggregationResultEntry>();
+		for (var entry : entries) {
+			var split = doSplit.apply(entry.key);
+			var depth = 0;
+			var parent = "";
 			while (!all.containsKey(parent) && depth < split.length) {
 				depth++;
 				if (depth == 1 && split.length == 1)
@@ -72,8 +71,8 @@ public class AggregationResult {
 	}
 
 	private String join(String[] array, int depth, String separator) {
-		String joined = "";
-		for (int index = 0; index < array.length; index++) {
+		var joined = "";
+		for (var index = 0; index < array.length; index++) {
 			if (index >= depth)
 				break;
 			if (!joined.isEmpty() && separator != null) {

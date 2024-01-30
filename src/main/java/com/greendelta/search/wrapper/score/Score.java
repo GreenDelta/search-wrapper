@@ -74,7 +74,7 @@ public class Score {
 	public double getDefaultWeight() {
 		if (cases.isEmpty())
 			return 1;
-		Case lastCase = cases.get(cases.size() - 1);
+		var lastCase = cases.get(cases.size() - 1);
 		if (lastCase.conditions.isEmpty())
 			return lastCase.weight;
 		return 1;

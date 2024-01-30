@@ -47,7 +47,7 @@ public class SearchQueryBuilder {
 		if (fields == null)
 			return this;
 		fullResult = false;
-		for (String field : fields) {
+		for (var field : fields) {
 			if (array && field.indexOf(".") != field.lastIndexOf("."))
 				throw new IllegalArgumentException("Only one level nested arrays are supported");
 			this.fields.add(new SearchField(field, array));
@@ -106,7 +106,7 @@ public class SearchQueryBuilder {
 	}
 
 	private boolean hasAggregation(String name) {
-		for (SearchAggregation aggregation : aggregations)
+		for (var aggregation : aggregations)
 			if (aggregation.name.equals(name))
 				return true;
 		return false;
@@ -123,7 +123,7 @@ public class SearchQueryBuilder {
 	public SearchQueryBuilder filter(String field, Set<SearchFilterValue> values, Conjunction conjunction) {
 		if (field == null || values == null || values.size() == 0)
 			return this;
-		SearchFilter filter = this.filters.get(field);
+		var filter = this.filters.get(field);
 		if (filter == null) {
 			this.filters.put(field, filter = new SearchFilter(field, values, conjunction));
 		} else {
@@ -139,8 +139,8 @@ public class SearchQueryBuilder {
 	public SearchQueryBuilder filter(String[] fields, Set<SearchFilterValue> values, Conjunction conjunction) {
 		if (fields == null || fields.length == 0 || values == null || values.size() == 0)
 			return this;
-		Set<String> fieldSet = new HashSet<>();
-		for (String field : fields) {
+		var fieldSet = new HashSet<String>();
+		for (var field : fields) {
 			fieldSet.add(field);
 		}
 		multiFilters.add(new MultiSearchFilter(fieldSet, values, conjunction));
@@ -165,24 +165,24 @@ public class SearchQueryBuilder {
 	}
 
 	public SearchQuery build() {
-		SearchQuery searchQuery = new SearchQuery(aggregations);
+		var searchQuery = new SearchQuery(aggregations);
 		if (page > 0) {
 			searchQuery.setPage(page);
 			searchQuery.setPageSize(pageSize);
 		}
-		for (SearchField field : fields) {
+		for (var field : fields) {
 			searchQuery.addField(field);
 		}
-		for (SearchFilter filter : filters.values()) {
+		for (var filter : filters.values()) {
 			searchQuery.addFilter(filter.field, filter.values, filter.conjunction);
 		}
-		for (MultiSearchFilter filter : multiFilters) {
+		for (var filter : multiFilters) {
 			searchQuery.addFilter(filter);
 		}
-		for (Score score : scores) {
+		for (var score : scores) {
 			searchQuery.addScore(score);
 		}
-		for (LinearDecayFunction function : functions) {
+		for (var function : functions) {
 			searchQuery.addScore(function);
 		}
 		searchQuery.setFullResult(fullResult);
@@ -191,18 +191,18 @@ public class SearchQueryBuilder {
 	}
 
 	private Set<SearchFilterValue> split(String query) {
-		Set<SearchFilterValue> splitted = new HashSet<>();
-		StringTokenizer splitter = new StringTokenizer(query, "\"", true);
-		boolean escaped = false;
+		var splitted = new HashSet<SearchFilterValue>();
+		var splitter = new StringTokenizer(query, "\"", true);
+		var escaped = false;
 		while (splitter.hasMoreTokens()) {
-			String token = splitter.nextToken();
+			var token = splitter.nextToken();
 			if ("\"".equals(token)) {
 				escaped = !escaped;
 			} else if (escaped) {
 				splitted.add(SearchFilterValue.phrase(token));
 			} else {
 				token = token.replace("@", " ");
-				for (String word : token.trim().split("\\s+")) {
+				for (var word : token.trim().split("\\s+")) {
 					splitted.add(SearchFilterValue.wildcard(word));
 				}
 			}
