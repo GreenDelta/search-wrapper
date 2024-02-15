@@ -24,6 +24,7 @@ public class SearchQuery {
 	private int page;
 	private int pageSize;
 	private boolean fullResult;
+	private boolean throwErrors;
 
 	SearchQuery(Set<SearchAggregation> aggregations) {
 		this.aggregations = aggregations != null ? aggregations : new HashSet<>();
@@ -106,11 +107,19 @@ public class SearchQuery {
 	public boolean getFullResult() {
 		return fullResult;
 	}
-
+	
 	void setFullResult(boolean value) {
 		this.fullResult = value;
 	}
 
+	public boolean getThrowErrors() {
+		return throwErrors;
+	}
+	
+	void setThrowErrors(boolean throwErrors) {
+		this.throwErrors = throwErrors;
+	}
+	
 	void setPage(int page) {
 		this.page = page;
 	}

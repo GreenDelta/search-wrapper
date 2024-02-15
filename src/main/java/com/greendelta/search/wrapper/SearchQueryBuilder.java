@@ -23,6 +23,7 @@ public class SearchQueryBuilder {
 	private Set<SearchField> fields = new HashSet<>();
 	private Map<String, SearchSorting> sortBy = new HashMap<>();
 	private boolean fullResult = true;
+	private boolean throwErrors;
 
 	public SearchQueryBuilder query(String query, String queryField) {
 		return query(query, queryField, null);
@@ -83,6 +84,11 @@ public class SearchQueryBuilder {
 		return this;
 	}
 
+	public SearchQueryBuilder throwErrors() {
+		this.throwErrors = true;
+		return this;
+	}
+	
 	public SearchQueryBuilder aggregation(SearchAggregation aggregation, String... values) {
 		if (values == null || values.length == 0)
 			return aggregation(aggregation, new HashSet<>());
@@ -185,6 +191,7 @@ public class SearchQueryBuilder {
 		for (var function : functions) {
 			searchQuery.addScore(function);
 		}
+		searchQuery.setThrowErrors(throwErrors);
 		searchQuery.setFullResult(fullResult);
 		searchQuery.setSortBy(sortBy);
 		return searchQuery;
