@@ -12,7 +12,7 @@ public class AggregationResultEntry {
 	public final List<AggregationResultEntry> subEntries = new ArrayList<>();
 
 	public AggregationResultEntry(String key, long count) {
-		this(key, count, key);
+		this(key, count, null);
 	}
 
 	public  AggregationResultEntry(String key, long count, Object data) {
