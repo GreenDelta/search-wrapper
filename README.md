@@ -1,3 +1,6 @@
+# Deprecated
+Please use the main branch instead
+
 # Search wrapper
 This project provides an abstraction layer for search engine implementation.
 
