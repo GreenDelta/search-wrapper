@@ -5,7 +5,7 @@ This project provides an abstraction layer for search engine implementation.
 
 #### Get the source code of the application
 We recommend that to use Git to manage the source code but you can also download
-the source code as a [zip file](https://github.com/GreenDelta/search-wrapper/archive/master.zip).
+the source code as a [zip file](https://github.com/GreenDelta/search-wrapper/archive/main.zip).
 Create a development directory (the path should not contain whitespaces):
 
 ```bash
@@ -20,4 +20,4 @@ git clone https://github.com/GreenDelta/search-wrapper.git
 ```
 
 #### Build
-Now you can build the module with `mvn install`, which will install the module in your local maven repository.
+Now you can build the module with `mvn install`, which will install the modules search-wrapper-api and search-wrapper-os in your local maven repository.
