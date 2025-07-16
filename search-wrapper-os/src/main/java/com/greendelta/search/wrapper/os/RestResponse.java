@@ -32,7 +32,7 @@ class RestResponse implements OsResponse {
 
 	@Override
 	public long getTotalHits() {
-		return response.getHits().getTotalHits().value;
+		return response.getHits().getTotalHits().value();
 	}
 
 	@Override

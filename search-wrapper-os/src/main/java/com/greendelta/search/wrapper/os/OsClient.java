@@ -13,12 +13,12 @@ import org.opensearch.action.delete.DeleteRequest;
 import org.opensearch.action.index.IndexRequest;
 import org.opensearch.action.support.WriteRequest.RefreshPolicy;
 import org.opensearch.action.update.UpdateRequest;
-import org.opensearch.client.Client;
-import org.opensearch.client.Requests;
 import org.opensearch.common.settings.Settings;
 import org.opensearch.common.xcontent.XContentType;
 import org.opensearch.script.Script;
 import org.opensearch.script.ScriptType;
+import org.opensearch.transport.client.Client;
+import org.opensearch.transport.client.Requests;
 
 import com.greendelta.search.wrapper.SearchClient;
 import com.greendelta.search.wrapper.SearchQuery;

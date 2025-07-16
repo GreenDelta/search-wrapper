@@ -3,10 +3,10 @@ package com.greendelta.search.wrapper.os;
 import java.io.IOException;
 
 import org.opensearch.action.search.SearchRequestBuilder;
-import org.opensearch.client.Client;
 import org.opensearch.index.query.QueryBuilder;
 import org.opensearch.search.aggregations.AggregationBuilder;
 import org.opensearch.search.sort.SortOrder;
+import org.opensearch.transport.client.Client;
 
 import com.greendelta.search.wrapper.os.Search.OsRequest;
 
